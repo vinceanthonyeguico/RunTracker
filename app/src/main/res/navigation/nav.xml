@@ -9,5 +9,16 @@
         android:id="@+id/homepage"
         android:name="com.example.runtracker.Homepage"
         android:label="fragment_homepage"
-        tools:layout="@layout/fragment_homepage" />
+        tools:layout="@layout/fragment_homepage" >
+        <action
+            android:id="@+id/action_homepage_to_startRunFragment"
+            app:destination="@id/startRunFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/startRunFragment"
+        android:name="com.example.runtracker.StartRun"
+        android:label="fragment_start_run"
+        tools:layout="@layout/fragment_start_run" />
+
 </navigation>
