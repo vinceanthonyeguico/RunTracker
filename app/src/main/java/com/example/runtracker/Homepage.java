@@ -11,6 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -18,7 +23,8 @@ import android.widget.Button;
  * create an instance of this fragment.
  */
 public class Homepage extends Fragment {
-
+    private Button startRunButton;
+    private TextView dateTextView;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -65,7 +71,8 @@ public class Homepage extends Fragment {
         // Inflate the layout for this fragment
         // return inflater.inflate(R.layout.fragment_homepage, container, false); // Default code
         View view = inflater.inflate(R.layout.fragment_homepage, container, false);
-        Button startRunButton = view.findViewById(R.id.startNewRunButton);
+        startRunButton = view.findViewById(R.id.startNewRunButton);
+        dateTextView = view.findViewById(R.id.dateTextView);
         startRunButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,6 +80,21 @@ public class Homepage extends Fragment {
             }
         });
         return view;
+    }
+
+    // Update the date whenever page is opened
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateDate();
+    }
+
+    public void updateDate() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM d, yyyy",
+                Locale.getDefault());
+        String currentDate = dateFormat.format(new Date());
+        String dateMessage = getString(R.string.today_date, currentDate);
+        dateTextView.setText(dateMessage);
     }
 
     // For the starRunButton to work
