@@ -9,12 +9,13 @@
         android:id="@+id/timeView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="48sp"
+        android:layout_marginTop="32dp"
         android:text="00:00"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="48sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="32dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/startPauseButton"
@@ -36,4 +37,47 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginBottom="32dp"/>
 
+    <TextView
+        android:id="@+id/averagePaceValueView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="0.00 mi/min"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/distanceValueView"
+        app:layout_constraintTop_toBottomOf="@id/timeView" />
+
+    <TextView
+        android:id="@+id/averagePaceLabelView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="average pace"
+        android:textSize="14sp"
+        app:layout_constraintTop_toBottomOf="@id/averagePaceValueView"
+        app:layout_constraintStart_toStartOf="@id/averagePaceValueView"
+        app:layout_constraintEnd_toEndOf="@id/averagePaceValueView" />
+
+    <TextView
+        android:id="@+id/distanceValueView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="0.00 mi"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/averagePaceValueView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/timeView" />
+
+    <TextView
+        android:id="@+id/distanceLabelView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="distance"
+        android:textSize="14sp"
+        app:layout_constraintTop_toBottomOf="@id/distanceValueView"
+        app:layout_constraintStart_toStartOf="@id/distanceValueView"
+        app:layout_constraintEnd_toEndOf="@id/distanceValueView" />
 </androidx.constraintlayout.widget.ConstraintLayout>

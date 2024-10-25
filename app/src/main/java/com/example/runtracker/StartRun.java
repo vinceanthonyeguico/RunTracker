@@ -142,7 +142,7 @@ public class StartRun extends Fragment {
                 int minutes = (seconds % 3600) / 60;
                 int secs = seconds % 60;
                 String time = String.format(Locale.getDefault(), "%02d:%02d:%02d",
-                        hours, minutes, seconds);
+                        hours, minutes, secs);
                 timeView.setText(time); // Change the time
                 if (running) {
                     seconds++; // Keep incrementing the seconds
