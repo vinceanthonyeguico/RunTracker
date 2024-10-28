@@ -1,16 +1,30 @@
 package com.example.runtracker;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.Locale;
 
@@ -19,7 +33,7 @@ import java.util.Locale;
  * Use the {@link StartRun#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class StartRun extends Fragment {
+public class StartRun extends Fragment implements OnMapReadyCallback {
     // For timer
     private int seconds = 0;
     private boolean running;
@@ -28,6 +42,9 @@ public class StartRun extends Fragment {
     private Button startPauseButton;
     private Button resetButton;
 
+    // For map
+    private GoogleMap map;
+    private FusedLocationProviderClient fusedLocationClient;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -67,6 +84,7 @@ public class StartRun extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity());
     }
 
     @Override
@@ -75,6 +93,15 @@ public class StartRun extends Fragment {
         // Inflate the layout for this fragment
         // return inflater.inflate(R.layout.fragment_start_run, container, false); // default code
         View view = inflater.inflate(R.layout.fragment_start_run, container, false);
+
+        // Map
+        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().
+            findFragmentById(R.id.map);
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(this);
+        }
+
+        // Timers and buttons
         timeView = view.findViewById(R.id.timeView); // Get timeview resource
         startPauseButton = view.findViewById(R.id.startPauseButton);
         resetButton = view.findViewById(R.id.resetButton);
@@ -153,6 +180,44 @@ public class StartRun extends Fragment {
     }
 
 
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+        map = googleMap;
+        map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        if (ActivityCompat.checkSelfPermission(requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            enableMyLocation();
+        } else {
+            // Shouldnt be an issue app already has permission defined
+        }
+        LatLng initialPosition = new LatLng(37.7749, -122.4194); // Temp
+        //map.moveCamera(CameraUpdateFactory.newLatLngZoom(initialPosition, 10));
 
+        // Update position
+        getLastKnownLocation();
+    }
 
+    private void enableMyLocation() {
+        if (ActivityCompat.checkSelfPermission(requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            UiSettings settings = map.getUiSettings();
+            settings.setCompassEnabled(true);
+            settings.setZoomControlsEnabled(true);
+            settings.setMyLocationButtonEnabled(true);
+            map.setMyLocationEnabled(true);
+        }
+    }
+
+    private void getLastKnownLocation() {
+        Log.d("getlocation", "Trying to get last known location");
+        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            fusedLocationClient.getLastLocation()
+                    .addOnSuccessListener(requireActivity(), location -> {
+                        if (location != null) {
+                            LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                            map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15));
+                        }
+                    });
+        }
+    }
 }

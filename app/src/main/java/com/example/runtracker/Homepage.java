@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
+import androidx.navigation.NavHost;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -17,6 +18,18 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import org.json.JSONException;
+import org.json.JSONObject;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link Homepage#newInstance} factory method to
@@ -24,7 +37,9 @@ import java.util.Locale;
  */
 public class Homepage extends Fragment {
     private Button startRunButton;
+    private Button viewRunsButton;
     private TextView dateTextView;
+    private TextView weatherTextView;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -72,13 +87,22 @@ public class Homepage extends Fragment {
         // return inflater.inflate(R.layout.fragment_homepage, container, false); // Default code
         View view = inflater.inflate(R.layout.fragment_homepage, container, false);
         startRunButton = view.findViewById(R.id.startNewRunButton);
+        viewRunsButton = view.findViewById(R.id.viewPreviousRunsButton);
         dateTextView = view.findViewById(R.id.dateTextView);
+        weatherTextView = view.findViewById(R.id.weatherTextView);
         startRunButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 navigateToStartRun();
             }
         });
+        viewRunsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navigateToRunList();
+            }
+        });
+
         return view;
     }
 
@@ -87,6 +111,8 @@ public class Homepage extends Fragment {
     public void onResume() {
         super.onResume();
         updateDate();
+        fetchWeatherData();
+
     }
 
     public void updateDate() {
@@ -101,5 +127,39 @@ public class Homepage extends Fragment {
     private void navigateToStartRun() {
         NavController navController = NavHostFragment.findNavController(this);
         navController.navigate(R.id.action_homepage_to_startRunFragment);
+    }
+    private void navigateToRunList() {
+        NavController navController = NavHostFragment.findNavController(this);
+        navController.navigate(R.id.action_homepage_to_runFragment);
+    }
+    private void fetchWeatherData() {
+        String apiKey = "bd5e378503939ddaee76f12ad7a97608"; // Replace with your actual OpenWeatherMap API key
+        String city = "San Jose"; // Replace with the desired city or implement location detection
+        String url = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + apiKey + "&units=imperial";
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONObject main = response.getJSONObject("main");
+                            double temp = main.getDouble("temp");
+                            String weatherMessage = "It is " + Math.round(temp) + "°F in " + city;
+                            weatherTextView.setText(weatherMessage);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            weatherTextView.setText("Weather data unavailable");
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        weatherTextView.setText("Error fetching weather data");
+                    }
+                });
+
+        RequestQueue queue = Volley.newRequestQueue(requireContext());
+        queue.add(jsonObjectRequest);
     }
 }

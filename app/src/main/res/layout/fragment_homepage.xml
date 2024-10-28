@@ -12,7 +12,7 @@
         android:id="@+id/welcomeTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Welcome back!"
+        android:text="@string/welcome_back"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent"
@@ -27,23 +27,35 @@
         app:layout_constraintTop_toBottomOf="@id/welcomeTextView"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="8dp"/>
+
+    <TextView
+        android:id="@+id/weatherTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:layout_marginTop="8sp"
+        app:layout_constraintTop_toBottomOf="@id/dateTextView"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <Button
         android:id="@+id/viewPreviousRunsButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="View Previous Runs"
+        android:text="@string/view_previous_runs"
         app:layout_constraintTop_toBottomOf="@id/dateTextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="32dp"/>
+        android:layout_marginTop="40dp"/>
 
     <Button
         android:id="@+id/startNewRunButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Start a New Run"
+        android:text="@string/start_a_new_run"
         app:layout_constraintTop_toBottomOf="@id/viewPreviousRunsButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp"/>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

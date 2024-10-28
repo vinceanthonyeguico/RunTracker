@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_homepage_to_startRunFragment"
             app:destination="@id/startRunFragment" />
+        <action
+            android:id="@+id/action_homepage_to_runFragment"
+            app:destination="@id/runFragment" />
     </fragment>
 
     <fragment
@@ -20,5 +23,10 @@
         android:name="com.example.runtracker.StartRun"
         android:label="fragment_start_run"
         tools:layout="@layout/fragment_start_run" />
+    <fragment
+        android:id="@+id/runFragment"
+        android:name="com.example.runtracker.RunFragment"
+        android:label="fragment_item_list"
+        tools:layout="@layout/fragment_item_list" />
 
 </navigation>
