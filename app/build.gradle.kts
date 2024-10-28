@@ -1,8 +1,13 @@
+import java.util.Properties
+import java.io.FileInputStream
 plugins {
     alias(libs.plugins.android.application)
 }
 
 android {
+    val localProperties = Properties()
+    localProperties.load(FileInputStream(rootProject.file("local.properties")))
+
     namespace = "com.example.runtracker"
     compileSdk = 34
 
@@ -14,6 +19,8 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        resValue("string", "maps_api_key", localProperties.getProperty("MAPS_API_KEY", ""))
     }
 
     buildTypes {
@@ -35,6 +42,10 @@ android {
 }
 
 dependencies {
+    implementation("com.google.android.gms:play-services-maps:18.1.0")
+    implementation("com.google.android.gms:play-services-location:21.0.1")
+
+    implementation("com.android.volley:volley:1.2.1")
 
     implementation(libs.appcompat)
     implementation(libs.material)
@@ -47,4 +58,5 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
 }

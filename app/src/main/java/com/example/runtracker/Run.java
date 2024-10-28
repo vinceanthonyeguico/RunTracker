@@ -3,77 +3,59 @@ import java.util.Date;
 import java.text.DecimalFormat;
 
 public class Run {
-    private Date date;
-    private int minutes;
-    private int seconds;
+    private int totalSeconds;
     private float distance;
-    //private float lastMileTime; // Probably implement later
-    private float avgMileTime;
+    private String date2;
+    private float avgPace;
+    private long runID;
 
-    // TO DO: Limit the distance to only two decimal places
-
-    public Run(Date date, int minutes, int seconds, float distance) {
-        this.date = date;
-        this.minutes = minutes;
-        this.seconds = seconds;
+    public Run(long runID, String date, int totalSeconds, float distance) {
+        this.runID = runID;
+        this.date2 = date;
+        this.totalSeconds = totalSeconds;
         this.distance = distance;
     }
-
-    public Date getDate() {
-        return date;
+    public int getTotalSeconds() {
+        return totalSeconds;
     }
 
-    public int getMinutes() {
-        return minutes;
+    public long getRunID() {
+        return this.runID;
     }
 
-    public int getSeconds() {
-        return seconds;
+    public void setRunID(long runID) { this.runID = runID; }
+
+    public void setDate(String date) { this.date2 = date; }
+
+    public String getDate() {
+        return date2;
     }
 
     public float getDistance() {
         return distance;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public void setMinutes(int minutes) {
-        this.minutes = minutes;
-    }
-
-    public void setSeconds(int seconds) {
-        this.seconds = seconds;
+    public void setTotalSeconds(int seconds) {
+        this.totalSeconds = seconds;
     }
 
     public void setDistance(float distance) {
         this.distance = distance;
     }
 
-    public float getTotalTimeInMinutes() {
-        return minutes + (seconds / 60f);
-    }
-
     public float getAveragePace() {
-        if (distance == 0) return 0;
-        float totalTimeInMinutes = getTotalTimeInMinutes();
-        return distance / totalTimeInMinutes;
-    }
-
-    public String getFormattedAveragePace() {
-        float pace = getAveragePace();
-        int paceMinutes = (int) pace;
-        int paceSeconds = Math.round(pace - paceMinutes);
-        return String.format("%d:%02d", paceMinutes, paceSeconds);
+        if (distance == 0.0) return 0.0f;
+        float minutes = totalSeconds / 60.0f;
+        float unroundedPace = distance / minutes;
+        float roundedPace = Math.round(unroundedPace * 100.0f) / 100.0f;
+        return roundedPace;
     }
 
     public String getFormattedTotalTime() {
-        return String.format("%d:%02d", minutes, seconds);
+        int hours = totalSeconds / 3600;
+        int minutes = (totalSeconds % 3600) / 60;
+        int seconds = totalSeconds % 60;
+        return String.format("%02d:%02d:%02d", hours, minutes, seconds);
     }
 
-    public String getFormattedDistance() {
-        DecimalFormat df = new DecimalFormat("0.00");
-        return df.format(distance);
-    }
 }

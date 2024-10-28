@@ -17,26 +17,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/startPauseButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Start"
-        app:layout_constraintBottom_toTopOf="@id/resetButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginBottom="16dp"/>
-
-    <Button
-        android:id="@+id/resetButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Reset"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginBottom="32dp"/>
-
     <TextView
         android:id="@+id/averagePaceValueView"
         android:layout_width="wrap_content"
@@ -80,4 +60,43 @@
         app:layout_constraintTop_toBottomOf="@id/distanceValueView"
         app:layout_constraintStart_toStartOf="@id/distanceValueView"
         app:layout_constraintEnd_toEndOf="@id/distanceValueView" />
+
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="16dp"
+        app:layout_constraintBottom_toTopOf="@id/startPauseButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.218"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/distanceValueView"
+        app:layout_constraintVertical_bias="0.625" />
+
+    <Button
+        android:id="@+id/startPauseButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Start"
+        app:layout_constraintWidth_percent=".5"
+        app:layout_constraintEnd_toStartOf="@+id/resetButton"
+        app:layout_constraintBottom_toTopOf="@+id/saveRunButton"/>
+
+    <Button
+        android:id="@+id/resetButton"
+        android:text= "Reset"
+        android:layout_width= "0dp"
+        android:layout_height= "wrap_content"
+        app:layout_constraintWidth_percent=".5"
+        app:layout_constraintStart_toEndOf ="@+id/startPauseButton"
+        app:layout_constraintBottom_toTopOf ="@+id/saveRunButton"/>
+    <Button
+        android:id="@+id/saveRunButton"
+        android:layout_width= "wrap_content"
+        android:layout_height= "wrap_content"
+        android:text="Save Run"
+        app:layout_constraintBottom_toBottomOf ="parent"
+        app:layout_constraintStart_toStartOf ="parent"
+        app:layout_constraintEnd_toEndOf ="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
