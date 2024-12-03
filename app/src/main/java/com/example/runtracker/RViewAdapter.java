@@ -27,7 +27,6 @@ import java.util.Locale;
 public class RViewAdapter extends RecyclerView.Adapter<RViewAdapter.ViewHolder> {
     private final List<Run> mValues;
     private final Context mContext;
-    private OnItemClickedListener listener;
 
     public RViewAdapter(List<Run> items, Context context) {
         mValues = items;
@@ -80,7 +79,6 @@ public class RViewAdapter extends RecyclerView.Adapter<RViewAdapter.ViewHolder> 
             mDurationView = binding.durationText;
             itemContent = binding.itemContent;
 
-            binding.getRoot().setOnClickListener(v -> listener.onClick(getLayoutPosition()));
         }
     }
 
@@ -102,7 +100,4 @@ public class RViewAdapter extends RecyclerView.Adapter<RViewAdapter.ViewHolder> 
         }
     }
 
-    public void setListener(OnItemClickedListener listener) {
-        this.listener = listener;
-    }
 }

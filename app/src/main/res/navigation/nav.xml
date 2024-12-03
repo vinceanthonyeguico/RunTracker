@@ -27,15 +27,7 @@
         android:id="@+id/runFragment"
         android:name="com.example.runtracker.RunFragment"
         android:label="fragment_item_list"
-        tools:layout="@layout/fragment_item_list" >
-        <action
-            android:id="@+id/action_runFragment_to_runDetailFragment"
-            app:destination="@id/runDetailFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/runDetailFragment"
-        android:name="com.example.runtracker.RunDetailFragment"
-        android:label="RunDetailFragment" />
+        tools:layout="@layout/fragment_item_list" />
 
 
 </navigation>

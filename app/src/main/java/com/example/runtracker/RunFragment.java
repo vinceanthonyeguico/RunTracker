@@ -74,7 +74,6 @@ public class RunFragment extends Fragment {
 
         // Set adapter
         RViewAdapter adapter = new RViewAdapter(runs, getContext());
-        adapter.setListener(this::onClick);
         recyclerView.setAdapter(adapter);
 
         // Setup swipe-to-delete
@@ -129,22 +128,4 @@ public class RunFragment extends Fragment {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
     }
-
-    public void onClick(int position) {
-        Log.d("Debug", "Position is: " + position);
-        goDetail(position);
-    }
-
-    public void goDetail(int position) {
-        if (runs != null && position >= 0 && position < runs.size()) {
-            Run run = runs.get(position);
-            Bundle bundle = new Bundle();
-            bundle.putLong("runId", run.getRunID());
-            NavController controller = NavHostFragment.findNavController(this);
-            controller.navigate(R.id.action_runFragment_to_runDetailFragment, bundle);
-        } else {
-            Log.e("RunFragment", "Invalid position or runs list is null");
-        }
-    }
-
 }
