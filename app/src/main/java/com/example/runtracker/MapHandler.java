@@ -31,7 +31,7 @@ public class MapHandler implements OnMapReadyCallback {
     private static LocationCallback locationCallback;
     private static List<LatLng> routePoints = new ArrayList<>(); // Used to store all points in user's route
     private static Polyline routePolyline; // Connects the points on the route
-    private static float totalDistance; // Used to display the distance on the TextView
+    private static float totalDistance = 0; // Used to display the distance on the TextView
 
     private static LocationUpdateListener locationUpdateListener;
 
@@ -97,14 +97,12 @@ public class MapHandler implements OnMapReadyCallback {
 
     private static void updateRouteOnMap() {
         if (map != null) {
-            if (routePolyline != null) {
-                routePolyline.remove();
-            }
+            map.clear(); // Clear existing map elements
             PolylineOptions polylineOptions = new PolylineOptions()
                     .addAll(routePoints)
-                    .color(Color.RED)
-                    .width(10);
-            routePolyline = map.addPolyline(polylineOptions);
+                    .width(10)
+                    .color(Color.RED); // Adjust color as needed
+            map.addPolyline(polylineOptions);
         }
     }
 
@@ -162,6 +160,8 @@ public class MapHandler implements OnMapReadyCallback {
         return results[0];
     }
 
+
+
     // May not be needed since we have updateDistance. The final call of updateDistance is
     // basically the totalDistance
     // Get distance. StarRun calls this to change the distance TextView in StartRun fragment
@@ -174,6 +174,10 @@ public class MapHandler implements OnMapReadyCallback {
         return locationCallback;
     }
 
+    public static List<LatLng> getRoutePoints() {
+        // Return the list of LatLng points representing the route
+        return new ArrayList<>(routePoints); // Replace `routePoints` with your actual list
+    }
 
 
 }

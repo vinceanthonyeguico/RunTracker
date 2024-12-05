@@ -1,10 +1,12 @@
 package com.example.runtracker;
 
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.ContentUris;
 import android.content.Context;
 import android.net.Uri;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,6 +59,13 @@ public class RViewAdapter extends RecyclerView.Adapter<RViewAdapter.ViewHolder> 
         // Set the duration, display "00:00:00" if null or empty
         String formattedTime = run.getFormattedTotalTime();
         holder.mDurationView.setText(formattedTime != null && !formattedTime.isEmpty() ? "Time: " + formattedTime : "Time: 00:00:00");
+
+        // Set click listener for navigation to DetailFragment
+        holder.itemContent.setOnClickListener(v -> {
+            Bundle bundle = new Bundle();
+            bundle.putLong("runId", run.getRunID()); // Pass run ID to the DetailFragment
+            Navigation.findNavController(v).navigate(R.id.action_runFragment_to_detailFragment, bundle);
+        });
     }
 
     @Override

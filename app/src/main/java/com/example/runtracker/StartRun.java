@@ -13,6 +13,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+
 import android.util.Log;
 
 import java.text.SimpleDateFormat;
@@ -182,26 +184,42 @@ public class StartRun extends Fragment implements MapHandler.LocationUpdateListe
     }
 
     public void saveRun() {
+        // Step 1: Save the Run
         String currentDate = getCurrentDate();
         currentRun.setDate(currentDate);
 
         ContentValues values = new ContentValues();
-        values.put("date",currentRun.getDate());
-        values.put("duration", currentRun.getTotalSeconds()); // Example field for duration
-        values.put("distance", currentRun.getDistance()); // Replace with actual distance calculation
+        values.put("date", currentRun.getDate());
+        values.put("duration", currentRun.getTotalSeconds()); // Duration in seconds
+        values.put("distance", currentRun.getDistance()); // Total distance in miles
 
         Uri newUri = getActivity().getContentResolver().insert(RunContentProvider.CONTENT_URI, values);
-        String idString = newUri.getLastPathSegment();
-        long id = Long.parseLong(idString);
-        Log.d("saveRunDebug", idString);
-        currentRun.setRunID(id);
-
-        if (newUri != null) {
-            Toast.makeText(getContext(), "Run saved!", Toast.LENGTH_SHORT).show();
-        } else {
+        if (newUri == null) {
             Toast.makeText(getContext(), "Error saving run.", Toast.LENGTH_SHORT).show();
+            return;
         }
+
+        // Get the generated run ID
+        String idString = newUri.getLastPathSegment();
+        long runId = Long.parseLong(idString);
+        currentRun.setRunID(runId);
+        Log.d("saveRunDebug", "Run saved with ID: " + runId);
+
+        // Step 2: Save the Location Points
+        for (LatLng point : MapHandler.getRoutePoints()) {
+            ContentValues pointValues = new ContentValues();
+            pointValues.put("runId", runId); // Associate the point with the current run ID
+            pointValues.put("latitude", point.latitude);
+            pointValues.put("longitude", point.longitude);
+
+            // Insert each point into the RunPoints table
+            getActivity().getContentResolver().insert(RunContentProvider.RUN_POINTS_CONTENT_URI, pointValues);
+        }
+
+        // Notify the user that the run has been saved
+        Toast.makeText(getContext(), "Run and route saved!", Toast.LENGTH_SHORT).show();
     }
+
 
     private void setDistance(float distance) {
         // Converts the distance from meters to to miles and stores within the class
