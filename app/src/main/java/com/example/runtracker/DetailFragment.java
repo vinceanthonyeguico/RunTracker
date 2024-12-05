@@ -10,6 +10,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import android.database.Cursor;
@@ -20,11 +21,14 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+
 
 public class DetailFragment extends Fragment {
     private long runId;
     private TextView distanceTextView;
     private TextView durationTextView;
+    private TextView paceTextView;
     private GoogleMap map;
 
     public DetailFragment() {}
@@ -50,6 +54,8 @@ public class DetailFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_detail, container, false);
         distanceTextView = view.findViewById(R.id.distanceTextView);
         durationTextView = view.findViewById(R.id.durationTextView);
+        paceTextView = view.findViewById(R.id.paceTextView);
+
 
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.mapFragment);
         if (mapFragment != null) {
@@ -82,6 +88,15 @@ public class DetailFragment extends Fragment {
                 distanceTextView.setText(String.format("Distance: %.2f mi", distance));
                 durationTextView.setText(String.format("Duration: %02d:%02d:%02d",
                         duration / 3600, (duration % 3600) / 60, duration % 60));
+
+                // Calculate and display average pace
+                if (distance > 0) {
+                    float durationInMinutes = duration / 60.0f;
+                    float averagePace = durationInMinutes / distance; // In minutes per mile
+                    paceTextView.setText(String.format(Locale.getDefault(), "Pace: %.2f min/mi", averagePace));
+                } else {
+                    paceTextView.setText("Pace: N/A"); // Handle case where distance is 0
+                }
             }
             runCursor.close();
         }
@@ -117,8 +132,13 @@ public class DetailFragment extends Fragment {
                     .color(Color.BLUE);
             map.addPolyline(polylineOptions);
 
-            // Center the map on the first point
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(routePoints.get(0), 15));
+            // Adjust camera to fit the route
+            LatLngBounds.Builder boundsBuilder = new LatLngBounds.Builder();
+            for (LatLng point : routePoints) {
+                boundsBuilder.include(point);
+            }
+            LatLngBounds bounds = boundsBuilder.build();
+            map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
         }
     }
 
