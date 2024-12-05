@@ -10,4 +10,8 @@
     <string name="pace_0_00_min_mi">Pace: 0:00 min/mi</string>
     <string name="duration_00_00_00">Duration: 00:00:00</string>
     <string name="distance_0_0_mi">Distance: 0.0 mi</string>
+    <string name="pause">Pause</string>
+    <string name="resume">Resume</string>
+    <string name="start">Start</string>
+    <string name="_00_00_00">00:00:00</string>
 </resources>

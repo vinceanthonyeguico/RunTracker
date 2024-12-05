@@ -4,10 +4,11 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.location.Location;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
+
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
 
@@ -53,7 +54,7 @@ public class RunDatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        Log.d("DatabaseHeper", "Creating tables...");
+        Log.d("DatabaseHelper", "Creating tables...");
         // Create `runs` table
         sqLiteDatabase.execSQL(CREATE_TABLE_RUNS);
 
@@ -85,13 +86,13 @@ public class RunDatabaseHelper extends SQLiteOpenHelper {
     }
 
     // Insert location points for a specific run
-    public void insertRunPoints(long runId, List<Location> locations) {
+    public void insertRunPoints(long runId, List<LatLng> points) {
         SQLiteDatabase db = getWritableDatabase();
-        for (Location location : locations) {
+        for (LatLng point : points) {
             ContentValues values = new ContentValues();
             values.put(COLUMN_RUN_ID_FK, runId);
-            values.put(COLUMN_LATITUDE, location.getLatitude());
-            values.put(COLUMN_LONGITUDE, location.getLongitude());
+            values.put(COLUMN_LATITUDE, point.latitude);
+            values.put(COLUMN_LONGITUDE, point.longitude);
             db.insert(TABLE_RUN_POINTS, null, values);
         }
     }
