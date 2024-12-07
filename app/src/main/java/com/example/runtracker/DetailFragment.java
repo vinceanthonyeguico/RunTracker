@@ -1,9 +1,8 @@
 package com.example.runtracker;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -23,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-
 public class DetailFragment extends Fragment {
     private long runId;
     private TextView distanceTextView;
@@ -33,13 +31,6 @@ public class DetailFragment extends Fragment {
 
     public DetailFragment() {}
 
-    public static DetailFragment newInstance(long runId) {
-        DetailFragment fragment = new DetailFragment();
-        Bundle args = new Bundle();
-        args.putLong("runId", runId);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -67,9 +58,10 @@ public class DetailFragment extends Fragment {
         return view;
     }
 
+    @SuppressLint("DefaultLocale")
     private void loadRunDetails() {
         // Query for run details
-        Cursor runCursor = getActivity().getContentResolver().query(
+        Cursor runCursor = requireActivity().getContentResolver().query(
                 RunContentProvider.CONTENT_URI,
                 new String[]{"distance", "duration"}, // Make sure column names match your DB schema
                 "id=?",
@@ -95,14 +87,14 @@ public class DetailFragment extends Fragment {
                     float averagePace = durationInMinutes / distance; // In minutes per mile
                     paceTextView.setText(String.format(Locale.getDefault(), "Pace: %.2f min/mi", averagePace));
                 } else {
-                    paceTextView.setText("Pace: N/A"); // Handle case where distance is 0
+                    paceTextView.setText(R.string.pace_n_a); // Handle case where distance is 0
                 }
             }
             runCursor.close();
         }
 
         // Query for run points
-        Cursor pointsCursor = getActivity().getContentResolver().query(
+        Cursor pointsCursor = requireActivity().getContentResolver().query(
                 RunContentProvider.RUN_POINTS_CONTENT_URI,
                 new String[]{"latitude", "longitude"}, // Make sure column names match your DB schema
                 "runId=?",

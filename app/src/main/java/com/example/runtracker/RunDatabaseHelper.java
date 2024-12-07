@@ -26,7 +26,6 @@ public class RunDatabaseHelper extends SQLiteOpenHelper {
 
     // Table: RunPoints
     public static final String TABLE_RUN_POINTS = "RunPoints";
-    public static final String COLUMN_RUN_POINT_ID = "runPointId";
     public static final String COLUMN_RUN_ID_FK = "runId";
     public static final String COLUMN_LATITUDE = "latitude";
     public static final String COLUMN_LONGITUDE = "longitude";

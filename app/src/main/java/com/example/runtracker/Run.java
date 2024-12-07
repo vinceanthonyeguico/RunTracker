@@ -1,12 +1,12 @@
 package com.example.runtracker;
-import java.util.Date;
-import java.text.DecimalFormat;
+
+
+import android.annotation.SuppressLint;
 
 public class Run {
     private int totalSeconds;
     private float distance;
     private String date2;
-    private float avgPace;
     private long runID;
 
     public Run(long runID, String date, int totalSeconds, float distance) {
@@ -47,10 +47,10 @@ public class Run {
         if (distance == 0.0) return 0.0f;
         float minutes = totalSeconds / 60.0f;
         float unroundedPace = distance / minutes;
-        float roundedPace = Math.round(unroundedPace * 100.0f) / 100.0f;
-        return roundedPace;
+        return Math.round(unroundedPace * 100.0f) / 100.0f;
     }
 
+    @SuppressLint("DefaultLocale")
     public String getFormattedTotalTime() {
         int hours = totalSeconds / 3600;
         int minutes = (totalSeconds % 3600) / 60;

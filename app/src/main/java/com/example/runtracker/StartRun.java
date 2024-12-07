@@ -62,6 +62,11 @@ public class StartRun extends Fragment implements MapHandler.LocationUpdateListe
         // return inflater.inflate(R.layout.fragment_start_run, container, false); // default code
         View view = inflater.inflate(R.layout.fragment_start_run, container, false);
 
+        GPSTracker gpsTracker = new GPSTracker(requireContext());
+
+        gpsTracker.getLocation();
+
+
         // Timers and buttons
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.map);
@@ -166,17 +171,20 @@ public class StartRun extends Fragment implements MapHandler.LocationUpdateListe
         String currentDate = getCurrentDate();
         currentRun.setDate(currentDate);
 
-        // Save the run details in the database
-        RunDatabaseHelper dbHelper = new RunDatabaseHelper(getContext());
-        long runId = dbHelper.insertRun(currentRun); // Save run and get the generated run ID
-        currentRun.setRunID(runId); // Set the run ID for the current run
-        Log.d("saveRunDebug", "Run saved with ID: " + runId);
+        try (RunDatabaseHelper dbHelper = new RunDatabaseHelper(getContext())) {
+            long runId = dbHelper.insertRun(currentRun); // Save run and get the generated run ID
+            currentRun.setRunID(runId); // Set the run ID for the current run
+            Log.d("saveRunDebug", "Run saved with ID: " + runId);
 
-        // Step 2: Save the location points (route) associated with the run
-        dbHelper.insertRunPoints(runId, MapHandler.getRoutePoints()); // Save the GPS points
+            // Step 2: Save the location points (route) associated with the run
+            dbHelper.insertRunPoints(runId, MapHandler.getRoutePoints()); // Save the GPS points
 
-        // Notify the user that the run has been saved successfully
-        Toast.makeText(getContext(), "Run and route saved!", Toast.LENGTH_SHORT).show();
+            // Notify the user that the run has been saved successfully
+            Toast.makeText(getContext(), "Run and route saved!", Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            Log.e("saveRunError", "Error saving run: ", e);
+            Toast.makeText(getContext(), "Failed to save run!", Toast.LENGTH_SHORT).show();
+        }
     }
 
 

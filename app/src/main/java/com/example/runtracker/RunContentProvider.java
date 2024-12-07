@@ -8,6 +8,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 
+import androidx.annotation.NonNull;
+
 import java.util.Objects;
 
 public class RunContentProvider extends ContentProvider {
@@ -80,9 +82,9 @@ public class RunContentProvider extends ContentProvider {
     }
 
     @Override
-    public int delete(Uri uri, String selection, String[] selectionArgs) {
+    public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
         SQLiteDatabase runDB = runDatabaseHelper.getWritableDatabase();
-        int rowsDeleted = 0;
+        int rowsDeleted;
 
         final int match = URI_MATCHER.match(uri);
         switch (match) {
@@ -107,7 +109,7 @@ public class RunContentProvider extends ContentProvider {
         }
 
         if (rowsDeleted > 0) {
-            getContext().getContentResolver().notifyChange(uri, null);
+            Objects.requireNonNull(getContext()).getContentResolver().notifyChange(uri, null);
         }
 
         return rowsDeleted;
@@ -119,7 +121,7 @@ public class RunContentProvider extends ContentProvider {
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         SQLiteDatabase runDB = runDatabaseHelper.getWritableDatabase();
-        int rowsUpdated = 0;
+        int rowsUpdated;
 
         // Determine which table to update based on the URI
         if (uri.equals(CONTENT_URI)) {

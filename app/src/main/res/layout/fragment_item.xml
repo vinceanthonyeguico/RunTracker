@@ -15,25 +15,25 @@
             android:id="@+id/runIdText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Run ID" />
+            android:text="@string/run_id" />
 
         <TextView
             android:id="@+id/dateText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Date" />
+            android:text="@string/date" />
 
         <TextView
             android:id="@+id/distanceText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Distance" />
+            android:text="@string/distance" />
 
         <TextView
             android:id="@+id/durationText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Duration" />
+            android:text="@string/duration" />
 
     </LinearLayout>
 
@@ -42,7 +42,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="end"
-        android:text="Delete"
+        android:text="@string/delete"
         android:visibility="gone" />
 
 </FrameLayout>
