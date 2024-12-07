@@ -3,15 +3,12 @@ package com.example.runtracker;
 import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.fragment.NavHostFragment;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +17,6 @@ import android.database.Cursor;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.runtracker.placeholder.PlaceholderContent;
 
 /**
  * A fragment representing a list of Items.
@@ -29,8 +25,6 @@ public class RunFragment extends Fragment {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
-    private int mColumnCount = 1;
     List<Run> runs;
 
     /**
@@ -53,10 +47,6 @@ public class RunFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-        }
     }
 
     @Override
@@ -66,7 +56,7 @@ public class RunFragment extends Fragment {
 
         // Set the adapter
         Context context = view.getContext();
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list);
+        RecyclerView recyclerView = view.findViewById(R.id.list);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
         // Load run data
@@ -86,7 +76,7 @@ public class RunFragment extends Fragment {
     private List<Run> loadRuns() {
         List<Run> runList = new ArrayList<>();
 
-        Cursor cursor = getActivity().getContentResolver().query(
+        Cursor cursor = requireActivity().getContentResolver().query(
                 RunContentProvider.CONTENT_URI,
                 new String[]{"id", "date", "duration", "distance"},
                 null,
@@ -112,14 +102,15 @@ public class RunFragment extends Fragment {
     private void setupSwipeToDelete(RecyclerView recyclerView) {
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
                 return false;
             }
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                int position = viewHolder.getAdapterPosition();
+                int position = viewHolder.getBindingAdapterPosition();
                 RViewAdapter adapter = (RViewAdapter) recyclerView.getAdapter();
+                assert adapter != null;
                 Run run = adapter.getItem(position);
                 adapter.deleteRun(run.getRunID(), position);
             }

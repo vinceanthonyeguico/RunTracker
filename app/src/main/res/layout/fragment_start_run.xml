@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="00:00"
+        android:text="@string/_00_00"
         android:textSize="48sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -22,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="0.00 mi/min"
+        android:text="@string/_0_00_mi_min"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,7 +33,7 @@
         android:id="@+id/averagePaceLabelView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="average pace"
+        android:text="@string/average_pace"
         android:textSize="14sp"
         app:layout_constraintTop_toBottomOf="@id/averagePaceValueView"
         app:layout_constraintStart_toStartOf="@id/averagePaceValueView"
@@ -44,7 +44,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="0.00 mi"
+        android:text="@string/_0_00_mi"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@id/averagePaceValueView"
@@ -55,13 +55,13 @@
         android:id="@+id/distanceLabelView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="distance"
+        android:text="@string/distance2"
         android:textSize="14sp"
         app:layout_constraintTop_toBottomOf="@id/distanceValueView"
         app:layout_constraintStart_toStartOf="@id/distanceValueView"
         app:layout_constraintEnd_toEndOf="@id/distanceValueView" />
 
-    <fragment
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="0dp"
@@ -78,14 +78,14 @@
         android:id="@+id/startPauseButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Start"
+        android:text="@string/start2"
         app:layout_constraintWidth_percent=".5"
         app:layout_constraintEnd_toStartOf="@+id/resetButton"
         app:layout_constraintBottom_toTopOf="@+id/saveRunButton"/>
 
     <Button
         android:id="@+id/resetButton"
-        android:text= "Reset"
+        android:text= "@string/reset"
         android:layout_width= "0dp"
         android:layout_height= "wrap_content"
         app:layout_constraintWidth_percent=".5"
@@ -95,7 +95,7 @@
         android:id="@+id/saveRunButton"
         android:layout_width= "wrap_content"
         android:layout_height= "wrap_content"
-        android:text="Save Run"
+        android:text="@string/save_run"
         app:layout_constraintBottom_toBottomOf ="parent"
         app:layout_constraintStart_toStartOf ="parent"
         app:layout_constraintEnd_toEndOf ="parent"/>
