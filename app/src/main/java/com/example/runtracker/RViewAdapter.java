@@ -1,12 +1,16 @@
 package com.example.runtracker;
 
 import androidx.annotation.NonNull;
+<<<<<<< HEAD
+
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.ContentUris;
 import android.content.Context;
 import android.net.Uri;
+<<<<<<< HEAD
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +49,7 @@ public class RViewAdapter extends RecyclerView.Adapter<RViewAdapter.ViewHolder> 
         Run run = mValues.get(position);
 
         // Set the ID
+<<<<<<< HEAD
         holder.mIdView.setText("Run #" + run.getRunID());
 
         // Set the date, display "N/A" if null
@@ -56,6 +61,7 @@ public class RViewAdapter extends RecyclerView.Adapter<RViewAdapter.ViewHolder> 
 
         // Set the duration, display "00:00:00" if null or empty
         String formattedTime = run.getFormattedTotalTime();
+<<<<<<< HEAD
         holder.mDurationView.setText(formattedTime != null && !formattedTime.isEmpty() ? "Time:\n " + formattedTime : "Time: 00:00:00");
     }
 

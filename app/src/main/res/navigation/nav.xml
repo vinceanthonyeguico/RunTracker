@@ -5,11 +5,12 @@
     android:id="@+id/nav"
     app:startDestination="@id/homepage">
 
+    <!-- Homepage Fragment -->
     <fragment
         android:id="@+id/homepage"
         android:name="com.example.runtracker.Homepage"
         android:label="fragment_homepage"
-        tools:layout="@layout/fragment_homepage" >
+        tools:layout="@layout/fragment_homepage">
         <action
             android:id="@+id/action_homepage_to_startRunFragment"
             app:destination="@id/startRunFragment" />
@@ -18,16 +19,29 @@
             app:destination="@id/runFragment" />
     </fragment>
 
+    <!-- Start Run Fragment -->
     <fragment
         android:id="@+id/startRunFragment"
         android:name="com.example.runtracker.StartRun"
         android:label="fragment_start_run"
         tools:layout="@layout/fragment_start_run" />
+
+    <!-- Run List Fragment -->
     <fragment
         android:id="@+id/runFragment"
         android:name="com.example.runtracker.RunFragment"
         android:label="fragment_item_list"
-        tools:layout="@layout/fragment_item_list" />
+        tools:layout="@layout/fragment_item_list">
+        <!-- Action to navigate to Detail Fragment -->
+        <action
+            android:id="@+id/action_runFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
+    </fragment>
 
-
+    <!-- Detail Fragment -->
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="com.example.runtracker.DetailFragment"
+        android:label="fragment_detail"
+        tools:layout="@layout/fragment_detail" />
 </navigation>

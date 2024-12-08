@@ -1,6 +1,5 @@
 package com.example.runtracker;
-import android.content.ContentValues;
-import android.net.Uri;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -13,6 +12,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.SupportMapFragment;
+
+
 import android.util.Log;
 
 import java.text.SimpleDateFormat;
@@ -29,48 +30,27 @@ public class StartRun extends Fragment implements MapHandler.LocationUpdateListe
     private TextView distanceView;
     private TextView paceView;
     private Button startPauseButton;
-    private Button resetButton;
-    private Button saveRunButton;
 
-    // For map
-    private GPSTracker gpsTracker;
     private MapHandler mapHandler;
 
     // For run
     Run currentRun = new Run(0, null, 0, 0.0f); // Initialize a temp run
-    private String date;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public StartRun() {
         // Required empty public constructor
     }
 
-    public static StartRun newInstance(String param1, String param2) {
-        StartRun fragment = new StartRun();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
         // Ask for permissions
-        gpsTracker = new GPSTracker(requireContext());
+        // For map
+        GPSTracker gpsTracker = new GPSTracker(requireContext());
         mapHandler = new MapHandler(this, gpsTracker);
         mapHandler.setLocationUpdateListener(this);
     }
@@ -82,6 +62,11 @@ public class StartRun extends Fragment implements MapHandler.LocationUpdateListe
         // return inflater.inflate(R.layout.fragment_start_run, container, false); // default code
         View view = inflater.inflate(R.layout.fragment_start_run, container, false);
 
+        GPSTracker gpsTracker = new GPSTracker(requireContext());
+
+        gpsTracker.getLocation();
+
+
         // Timers and buttons
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.map);
@@ -89,13 +74,15 @@ public class StartRun extends Fragment implements MapHandler.LocationUpdateListe
             mapHandler.initializeMap(mapFragment);
         }
 
+<<<<<<< HEAD
         timeView = view.findViewById(R.id.timeView); // Get timeview resource
+
         distanceView = view.findViewById(R.id.distanceValueView);
         paceView = view.findViewById(R.id.averagePaceValueView);
 
         startPauseButton = view.findViewById(R.id.startPauseButton);
-        resetButton = view.findViewById(R.id.resetButton);
-        saveRunButton = view.findViewById(R.id.saveRunButton);
+        Button resetButton = view.findViewById(R.id.resetButton);
+        Button saveRunButton = view.findViewById(R.id.saveRunButton);
 
         saveRunButton.setOnClickListener(v -> saveRun());
         startPauseButton.setOnClickListener(v -> {
@@ -131,13 +118,13 @@ public class StartRun extends Fragment implements MapHandler.LocationUpdateListe
 
     private void startTimer() {
         running = true;
-        startPauseButton.setText("Pause");
+        startPauseButton.setText(R.string.pause);
         MapHandler.enableLocationUpdates(); // Start location tracking to build user's route
     }
 
     private void pauseTimer() {
         running = false;
-        startPauseButton.setText("Resume");
+        startPauseButton.setText(R.string.resume);
         MapHandler.disableLocationUpdates();
     }
     // TO DO: Expand this method to be able to reset the whole page?
@@ -145,8 +132,8 @@ public class StartRun extends Fragment implements MapHandler.LocationUpdateListe
     private void resetTimer() {
         running = false;
         currentRun.setTotalSeconds(0);
-        startPauseButton.setText("Start");
-        timeView.setText("00:00:00");
+        startPauseButton.setText(R.string.start);
+        timeView.setText(R.string._00_00_00);
     }
 
     private void resetPage() {
@@ -182,29 +169,29 @@ public class StartRun extends Fragment implements MapHandler.LocationUpdateListe
     }
 
     public void saveRun() {
+<<<<<<< HEAD
 
         pauseTimer();
-
         String currentDate = getCurrentDate();
         currentRun.setDate(currentDate);
 
-        ContentValues values = new ContentValues();
-        values.put("date",currentRun.getDate());
-        values.put("duration", currentRun.getTotalSeconds()); // Example field for duration
-        values.put("distance", currentRun.getDistance()); // Replace with actual distance calculation
+        try (RunDatabaseHelper dbHelper = new RunDatabaseHelper(getContext())) {
+            long runId = dbHelper.insertRun(currentRun); // Save run and get the generated run ID
+            currentRun.setRunID(runId); // Set the run ID for the current run
+            Log.d("saveRunDebug", "Run saved with ID: " + runId);
 
-        Uri newUri = getActivity().getContentResolver().insert(RunContentProvider.CONTENT_URI, values);
-        String idString = newUri.getLastPathSegment();
-        long id = Long.parseLong(idString);
-        Log.d("saveRunDebug", idString);
-        currentRun.setRunID(id);
+            // Step 2: Save the location points (route) associated with the run
+            dbHelper.insertRunPoints(runId, MapHandler.getRoutePoints()); // Save the GPS points
 
-        if (newUri != null) {
-            Toast.makeText(getContext(), "Run saved!", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(getContext(), "Error saving run.", Toast.LENGTH_SHORT).show();
+            // Notify the user that the run has been saved successfully
+            Toast.makeText(getContext(), "Run and route saved!", Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            Log.e("saveRunError", "Error saving run: ", e);
+            Toast.makeText(getContext(), "Failed to save run!", Toast.LENGTH_SHORT).show();
         }
     }
+
+
 
     private void setDistance(float distance) {
         // Converts the distance from meters to to miles and stores within the class
@@ -218,6 +205,7 @@ public class StartRun extends Fragment implements MapHandler.LocationUpdateListe
         return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
     }
 
+    @SuppressLint("DefaultLocale")
     @Override
     public void onLocationUpdate(float distance) {
         // Can create separate methods just for changing the text

@@ -12,6 +12,7 @@
         android:padding="15dp"
         tools:ignore="UselessParent">
 
+<<<<<<< HEAD
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -44,7 +45,6 @@
                     android:gravity="center"
                     android:layout_gravity="center"
                     android:paddingVertical="3dp"/>
-
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -78,4 +78,5 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
+<<<<<<< HEAD
 </FrameLayout>

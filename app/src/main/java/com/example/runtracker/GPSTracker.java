@@ -18,7 +18,7 @@ import com.google.android.gms.location.LocationServices;
 
 public class GPSTracker {
     // Class asks for users location and permission
-    private Context context;
+    private final Context context;
     public GPSTracker(Context context) {
         Log.d("GPSTrackerDebug", "GPSTracker constructor called");
         this.context = context;
@@ -32,7 +32,7 @@ public class GPSTracker {
     private void showSettingAlert() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
         alertDialog.setMessage("Please enable location service.");
-        alertDialog.setPositiveButton("Emable", (dialog, which) -> dialog.cancel());
+        alertDialog.setPositiveButton("Enable", (dialog, which) -> dialog.cancel());
         alertDialog.show();
     }
 
@@ -56,6 +56,7 @@ public class GPSTracker {
                     "Lat " + latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();
         }
     }
+
 
     public void getLocation() {
         Log.d("LocationDebug", "Tried to get current location");
