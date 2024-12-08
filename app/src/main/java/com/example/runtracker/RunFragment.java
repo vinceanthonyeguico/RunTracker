@@ -17,6 +17,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.database.Cursor;
+import android.widget.TextView;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,10 +69,21 @@ public class RunFragment extends Fragment {
         // Set the adapter
         Context context = view.getContext();
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list);
+        TextView emptyMessage = view.findViewById(R.id.emptyMessage); // Add reference to TextView
+
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
         // Load run data
         runs = loadRuns();
+
+        // If no runs found
+        if (runs.isEmpty()) {
+            recyclerView.setVisibility(View.GONE);
+            emptyMessage.setVisibility(View.VISIBLE);
+        } else {
+            recyclerView.setVisibility(View.VISIBLE);
+            emptyMessage.setVisibility(View.GONE);
+        }
 
         // Set adapter
         RViewAdapter adapter = new RViewAdapter(runs, getContext());

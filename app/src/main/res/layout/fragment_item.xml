@@ -1,48 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <LinearLayout
         android:id="@+id/item_content"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="110dp"
         android:orientation="vertical"
-        android:padding="16dp"
-        android:background="@android:color/white">
+        android:padding="15dp"
+        tools:ignore="UselessParent">
 
-        <TextView
-            android:id="@+id/runIdText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Run ID" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:background="@drawable/fragment_border">
 
-        <TextView
-            android:id="@+id/dateText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Date" />
+            <TextView
+                android:id="@+id/runIdText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/run_id"
+                android:textColor="@color/black"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:paddingHorizontal="10dp"
+                />
 
-        <TextView
-            android:id="@+id/distanceText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Distance" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:background="@drawable/fragment_border">
 
-        <TextView
-            android:id="@+id/durationText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Duration" />
+                <TextView
+                    android:id="@+id/dateText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/date"
+                    android:textColor="@color/black"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:paddingVertical="3dp"/>
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:background="@drawable/fragment_border">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            android:background="@drawable/fragment_border">
+                            <TextView
+                                android:id="@+id/distanceText"
+                                android:layout_width="0dp"
+                                android:layout_height="fill_parent"
+                                android:text="@string/fragment_distance"
+                                android:textColor="@color/black"
+                                android:layout_weight="1"
+                                android:layout_gravity="center"
+                                android:gravity="center"/>
+                            <TextView
+                                android:id="@+id/durationText"
+                                android:layout_width="0dp"
+                                android:layout_height="fill_parent"
+                                android:text="@string/duration"
+                                android:textColor="@color/black"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:layout_gravity="center"/>
+                        </LinearLayout>
+                    </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
-
-    <Button
-        android:id="@+id/delete_button"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="end"
-        android:text="Delete"
-        android:visibility="gone" />
-
 </FrameLayout>

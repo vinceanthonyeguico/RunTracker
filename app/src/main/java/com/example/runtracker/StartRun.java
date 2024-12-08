@@ -89,7 +89,7 @@ public class StartRun extends Fragment implements MapHandler.LocationUpdateListe
             mapHandler.initializeMap(mapFragment);
         }
 
-        timeView = view.findViewById(R.id.timeView); // Get timeview resource\
+        timeView = view.findViewById(R.id.timeView); // Get timeview resource
         distanceView = view.findViewById(R.id.distanceValueView);
         paceView = view.findViewById(R.id.averagePaceValueView);
 
@@ -182,6 +182,9 @@ public class StartRun extends Fragment implements MapHandler.LocationUpdateListe
     }
 
     public void saveRun() {
+
+        pauseTimer();
+
         String currentDate = getCurrentDate();
         currentRun.setDate(currentDate);
 
@@ -224,7 +227,7 @@ public class StartRun extends Fragment implements MapHandler.LocationUpdateListe
         setDistance(distance);
 
         // Update average pace in this method instead of runTimer (Pace does not need to keep updating every second)
-        paceView.setText(String.format("%.2f mi/min", currentRun.getAveragePace()));
+        paceView.setText(String.format("%.2f min/mi", currentRun.getAveragePace()));
 
         if (running) {
             String distanceText = String.format(Locale.getDefault(), "%.2f mi", distance / 1609.344);

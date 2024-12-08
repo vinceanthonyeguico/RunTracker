@@ -1,17 +1,21 @@
 package com.example.runtracker;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
-import androidx.navigation.NavHost;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -26,9 +30,6 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -40,6 +41,7 @@ public class Homepage extends Fragment {
     private Button viewRunsButton;
     private TextView dateTextView;
     private TextView weatherTextView;
+    private ImageButton settingsBtn;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -90,6 +92,7 @@ public class Homepage extends Fragment {
         viewRunsButton = view.findViewById(R.id.viewPreviousRunsButton);
         dateTextView = view.findViewById(R.id.dateTextView);
         weatherTextView = view.findViewById(R.id.weatherTextView);
+        settingsBtn = view.findViewById(R.id.settingsBtn);
         startRunButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,6 +103,12 @@ public class Homepage extends Fragment {
             @Override
             public void onClick(View v) {
                 navigateToRunList();
+            }
+        });
+        settingsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showSettingsMenu(v);
             }
         });
 
@@ -132,6 +141,26 @@ public class Homepage extends Fragment {
         NavController navController = NavHostFragment.findNavController(this);
         navController.navigate(R.id.action_homepage_to_runFragment);
     }
+    private void showSettingsMenu(View anchor) {
+        PopupMenu popupMenu = new PopupMenu(requireContext(), anchor);
+        popupMenu.getMenuInflater().inflate(R.menu.menu, popupMenu.getMenu());
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                uninstallApp();
+                return true;
+            }
+        });
+        popupMenu.show();
+    }
+
+    private void uninstallApp() {
+        // Code to uninstall the app or show a prompt
+        Intent intent = new Intent(Intent.ACTION_DELETE);
+        intent.setData(Uri.parse("package:" + requireContext().getPackageName()));
+        startActivity(intent);
+    }
+
     private void fetchWeatherData() {
         String apiKey = "bd5e378503939ddaee76f12ad7a97608"; // Replace with your actual OpenWeatherMap API key
         String city = "San Jose"; // Replace with the desired city or implement location detection

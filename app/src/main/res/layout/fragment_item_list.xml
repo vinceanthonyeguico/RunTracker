@@ -1,13 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/list"
-    android:name="com.example.runtracker.RunFragment"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
-    app:layoutManager="LinearLayoutManager"
-    tools:context=".RunFragment"
-    tools:listitem="@layout/fragment_item" />
+    android:orientation="horizontal">
+    <androidx.recyclerview.widget.RecyclerView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/list"
+        android:name="com.example.runtracker.RunFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layoutManager="LinearLayoutManager"
+        tools:context=".RunFragment"
+        tools:listitem="@layout/fragment_item"
+        />
+    <TextView
+        android:id="@+id/emptyMessage"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/empty"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textStyle="italic|bold"
+        android:textSize="55sp"
+        android:paddingHorizontal="20dp"
+        />
+</LinearLayout>
